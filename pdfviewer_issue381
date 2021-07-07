@@ -1,0 +1,6 @@
+#!/bin/sh
+NEXTCLOUD_DIR = /usr/local/www/nextcloud
+curl -o /root/files_pdfviewer-main.js https://raw.githubusercontent.com/nextcloud/files_pdfviewer/6d81ffbb65c3758bece144e0aff07b4a0ad20eef/js/files_pdfviewer-main.js
+cp ${NEXTCLOUD_DIR}/apps-pkg/files_pdfviewer/js/files_pdfviewer-main.js ${NEXTCLOUD_DIR}/apps-pkg/files_pdfviewer/js/files_pdfviewer-main.js.old
+mv /root/files_pdfviewer-main.js ${NEXTCLOUD_DIR}/apps-pkg/files_pdfviewer/js/files_pdfviewer-main.js
+service php-fpm restart && service nginx restart
