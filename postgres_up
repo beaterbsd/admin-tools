@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Postgres install and initial configuration
+psql_version=96
+LANG="es_ES.UTF8"
+
+install()
+{
+    pkg ins -y postgresql"${psql_version}"-server
+}
+
+# Create rc script unicode + lang
+config()
+{
+    login()
+    {
+        printf 'postgres:\\ \n'
+        printf '\t:lang=%s:\\ \n' "${LANG}"
+        printf '\t:setenv=LC_COLLATE=C:\\ \n'
+        printf '\t:tc=default:'
+    }
+    login >> /etc/login.conf
+    cap_mkdb /etc/login.conf
+    sysrc postgresql_enable="YES"
+    sysrc postgresql_class="postgres"
+}
+
+init()
+{
+    /usr/local/etc/rc.d/postgresql initdb
+    /usr/local/etc/rc.d/postgresql start
+}
+
+main()
+{
+    install
+    config
+    init
+}
+
+main "$@"
